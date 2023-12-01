@@ -1,0 +1,49 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+}
+
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#HyperLinkField,
+#educationFields,
+#skillField,
+#certificationFields,
+#projectField {
+    margin-top: 20px;
+}
+
+.HyperLink-entry,
+.education-entry,
+.skills-entry,
+.certification-entry,
+.project-entry {
+    margin-bottom: 10px;
+}

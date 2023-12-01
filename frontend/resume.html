@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link href="css/resume.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+
+<body>
+
+    <div id="resume">  
+    <div id="resumeData" class="resume-container"></div>
+    <div id="basic-info"></div>
+    <div id="coldiv">
+    <div id="coldiv1">
+    <div id="summary-div"></div>
+    <div id="education-div"></div>
+    <div id="projects-div"></div></div>
+    <div id="coldiv2">
+    <div id="skill-div">
+        <h2 class="resume-section">Skills</h2><hr class=hrdiv>
+        <ul class="resume-list" id="skill-list"> </div>
+    <div id="certification-div"></div></div></div></div>
+    
+
+    <script>
+        // Fetch data from the API
+        const xhr = new XMLHttpRequest();
+
+        // Specify the request method and URL
+        xhr.open('GET', 'http://localhost:3000/getpost', true);
+
+        // Set the callback function to handle the response
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Parse the JSON response
+                    const data = JSON.parse(xhr.responseText);
+
+                    // Process the data and display it on the page
+                    displayResumeData(data);
+                } else {
+                    console.error('Error fetching data. Status:', xhr.status);
+                }
+            }
+        };
+
+        // Send the request
+        xhr.send();
+
+        function displayResumeData(data) {
+        const resumeDataContainer = document.getElementById('resumeData');
+        const summary = document.getElementById('summary-div');
+        const info = document.getElementById('basic-info'); 
+        const educationdiv = document.getElementById('education-div')
+        const certificationdiv = document.getElementById('certification-div');
+        const projectsdiv =document.getElementById('projects-div');
+
+        // Display basic information
+        resumeDataContainer.innerHTML += `<h1 class="resume-name">${data[0].name}</h1>`;
+        resumeDataContainer.innerHTML += '<hr>';
+        info.innerHTML += `<p class="resume-phone"><i class="fa fa-phone"></i> ${data[0].phone}</p>`;
+        info.innerHTML += `<p class="resume-email"><i class="fa fa-envelope"></i> ${data[0].email}</p>`;
+        info.innerHTML += `<p class="resume-address"><i class="fa fa-map-marker"></i> ${data[0].address}</p>`;
+        
+        // Display Hyperlinks
+        info.innerHTML += '<ul class="resume-list">';
+        data[0].hyperlinks.forEach(hyperlink => {
+            info.innerHTML += `<li><i class="fa fa-link"></i> <a href="${hyperlink}" class="resume-item">${hyperlink}</a></li>`;
+        });
+        info.innerHTML += '</ul>';
+
+        // Summary
+        summary.innerHTML += '<h2>Summary</h2><hr class=hrdiv>';
+        summary.innerHTML += `<p class="resume-summary">${data[0].summary}</p>`;
+
+           
+
+            // Display education information
+            educationdiv.innerHTML += '<h2 class="resume-section">Education</h2><hr class=hrdiv>';
+            data[0].educations.forEach(education => {
+                educationdiv.innerHTML +=
+                    `<div class="resume-education"> 
+                    <h5>${education.degree}</h5>
+                    <h6>${education.school}</h6>
+                    <i class="fa fa-calendar" > ${education.fromYear} - ${education.toYear}</i></div>`;
+            });
+
+            // Display skills
+            const skilllist = document.getElementById('skill-list');
+      skilllist.innerHTML = ''; 
+      data[0].skills.forEach(skill => {
+        skilllist.innerHTML += `<li class="resume-item">${skill.skill}</li>`;
+      });
+           
+
+            // Display certifications
+           certificationdiv.innerHTML += '<h2 class="resume-section">Certifications</h2><hr class=hrdiv>';
+            data[0].certifications.forEach(certification => {
+                certificationdiv.innerHTML +=`<h5>${certification.course} </h5>
+                    <p class="resume-certification">${certification.institute}</p>`;
+            });
+
+            // Display projects
+            projectsdiv.innerHTML += '<h2 class="resume-section">Projects</h2><hr class=hrdiv>';
+            data[0].projects.forEach(project => {
+                projectsdiv.innerHTML +=
+                    `<h4>${project.name}</h4>  <i class="fa far fa-calendar"> ${project.date}</i> <i class="fa fa-map-pin"> ${project.location}</i>`;
+                projectsdiv.innerHTML += `<p class="resume-description">${project.description}</p>`;
+                projectsdiv.innerHTML +=
+                    `<p class="resume-hyperlink"><a href="${project.hyperlink}" target="_blank">${project.hyperlink}</a></p>`;
+            });}
+    </script>
+</body>
+
+</html> 
